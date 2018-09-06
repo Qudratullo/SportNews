@@ -1,4 +1,4 @@
-package com.example.sportnews;
+package com.example.sportnews.Activities;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -7,15 +7,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.sportnews.Adapters.NewsAdapter;
+import com.example.sportnews.Api;
 import com.example.sportnews.Classes.AllNews;
 import com.example.sportnews.Classes.NewsItem;
+import com.example.sportnews.Constants;
+import com.example.sportnews.R;
 
 import java.util.ArrayList;
 
@@ -39,6 +42,7 @@ public class TopStoriesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            /*получить значение имени категорий*/
             newsCategory = getArguments().getString(NEWS_CATEGORY);
         }
     }
@@ -53,7 +57,7 @@ public class TopStoriesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new NewsAdapter(new ArrayList<NewsItem>(), getActivity()));
-//
+
         progressSpinner = rootView.findViewById(R.id.progress_spinner);
         progressSpinner.setIndeterminate(true);
         progressSpinner.getIndeterminateDrawable()
@@ -64,12 +68,16 @@ public class TopStoriesFragment extends Fragment {
 
         progressSpinner.setVisibility(View.VISIBLE);
 
+        /*создать запрос*/
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
+
+        /*запрос к серверу*/
         api.getAllNews(newsCategory).enqueue(new Callback<AllNews>() {
             @Override
             public void onResponse(Call<AllNews> call, Response<AllNews> response) {
                 if (response.isSuccessful()) {
+                    /*установка адаптер recyclerView*/
                     adapter = new NewsAdapter(response.body().getEvents(), getActivity());
                     recyclerView.setAdapter(adapter);
                 }
@@ -93,7 +101,7 @@ public class TopStoriesFragment extends Fragment {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    static TopStoriesFragment newInstance(String category) {
+    public static TopStoriesFragment newInstance(String category) {
         TopStoriesFragment fragment = new TopStoriesFragment();
 
         Bundle bundle = new Bundle(1);

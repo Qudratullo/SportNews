@@ -1,4 +1,4 @@
-package com.example.sportnews;
+package com.example.sportnews.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,19 +7,18 @@ import android.content.res.Resources;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.sportnews.R;
-import com.example.sportnews.TopStoriesFragment;
+import com.example.sportnews.Activities.TopStoriesFragment;
 
 public class NewsCategoryAdapter extends FragmentPagerAdapter {
 
     private String [] categories = {"football", "hockey", "tennis", "basketball", "volleyball", "cybersport"};
     private Resources resources;
 
-    NewsCategoryAdapter(Context context, FragmentManager fm) {
+    public NewsCategoryAdapter(Context context, FragmentManager fm) {
         super(fm);
         resources = context.getResources();
     }
 
-    /** Instantiate fragment based on user horizontal scroll position */
     @Override
     public Fragment getItem(int position) {
         return TopStoriesFragment.newInstance(categories[position]);

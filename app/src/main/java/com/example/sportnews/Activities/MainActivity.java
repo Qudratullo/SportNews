@@ -1,4 +1,4 @@
-package com.example.sportnews;
+package com.example.sportnews.Activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.sportnews.Adapters.NewsCategoryAdapter;
+import com.example.sportnews.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.sliding_tabs);
         viewPager = findViewById(R.id.view_pager);
 
+        /*Настройка TabLayout*/
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.colorWhite));
         tabLayout.setTabTextColors(
                 ContextCompat.getColor(this, android.R.color.black),
@@ -32,11 +36,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         NewsCategoryAdapter adapter = new NewsCategoryAdapter(this, getSupportFragmentManager());
-//        tabLayout.getBackground().setAlpha(125);
-//        tabLayout.setBackgroundColor(R.color.primaryDark);
         viewPager.setAdapter(adapter);
-        //tabLayout.getTabAt(0).setIcon(R.drawable.ic_football);
-
     }
 
     @Override

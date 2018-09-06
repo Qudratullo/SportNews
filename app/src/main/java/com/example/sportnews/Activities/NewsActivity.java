@@ -1,4 +1,4 @@
-package com.example.sportnews;
+package com.example.sportnews.Activities;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,8 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sportnews.Api;
 import com.example.sportnews.Classes.Article;
 import com.example.sportnews.Classes.News;
+import com.example.sportnews.Constants;
+import com.example.sportnews.R;
 
 import java.util.List;
 
@@ -39,9 +42,11 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
+        /*Настройка вернуться на главную страницу*/
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        /*Получить данные из интента*/
         final String title = getIntent().getStringExtra("title");
         final String time = getIntent().getStringExtra("time");
         final String place = getIntent().getStringExtra("place");
@@ -51,9 +56,9 @@ public class NewsActivity extends AppCompatActivity {
         timeGame = findViewById(R.id.time_game);
         placeGame = findViewById(R.id.place_game);
         tournamentGame = findViewById(R.id.tournament_game);
-
         linearLayout = findViewById(R.id.linear_layout);
 
+        /*создать запрос*/
         Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
         Api api = retrofit.create(Api.class);
 
@@ -67,47 +72,55 @@ public class NewsActivity extends AppCompatActivity {
 
         progressSpinner.setVisibility(View.VISIBLE);
 
+        /*запрос к серверу*/
         api.getNews(article).enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
-                News news = response.body();
-                titleGame.setText(title);
-                timeGame.setText(time);
-                placeGame.setText(place);
-                tournamentGame.setText(news.getTournament());
-                List <Article> articles = news.getArticle();
-                LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                for (Article item : articles) {
-                    if (item.getHeader() != "") {
-                        TextView header = new TextView(getApplicationContext());
-                        header.setText(item.getHeader());
-                        header.setTextColor(Color.BLUE);
-                        header.setTextSize(17f);
-                        llParams.setMargins(0, 16, 0, 0);
-                        linearLayout.addView(header, llParams);
+                if (response.isSuccessful()) {
+                    /*Отображать данные*/
+                    News news = response.body();
+                    titleGame.setText(title);
+                    timeGame.setText(time);
+                    placeGame.setText(place);
+                    tournamentGame.setText(news.getTournament());
+                    List <Article> articles = news.getArticle();
+                    LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    /*добавить статьи на LinearLayout*/
+                    for (Article item : articles) {
+                        if (item.getHeader() != "") {
+                            TextView header = new TextView(getApplicationContext());
+                            header.setText(item.getHeader());
+                            header.setTextColor(Color.BLUE);
+                            header.setTextSize(17f);
+                            llParams.setMargins(0, 16, 0, 0);
+                            linearLayout.addView(header, llParams);
+                        }
+                        if (item.getText() != "") {
+                            llParams.setMargins(0, 8, 0, 0);
+                            TextView text = new TextView(getApplicationContext());
+                            text.setText(item.getText());
+                            text.setTextColor(Color.BLACK);
+                            text.setTextSize(16f);
+                            linearLayout.addView(text, llParams);
+                        }
                     }
-                    if (item.getText() != "") {
-                        llParams.setMargins(0, 8, 0, 0);
-                        TextView text = new TextView(getApplicationContext());
-                        text.setText(item.getText());
-                        text.setTextColor(Color.BLACK);
-                        text.setTextSize(16f);
-                        linearLayout.addView(text, llParams);
-                    }
+                    TextView header = new TextView(getApplicationContext());
+                    header.setText("Прогнозирование");
+                    header.setTextColor(Color.BLUE);
+                    header.setTextSize(17f);
+                    llParams.setMargins(0, 16, 0, 0);
+                    linearLayout.addView(header, llParams);
+                    llParams.setMargins(0, 16, 0, 0);
+                    predictionGame = new TextView(getApplicationContext());
+                    predictionGame.setText(news.getPrediction());
+                    predictionGame.setTextColor(Color.BLACK);
+                    predictionGame.setTextSize(16f);;
+                    linearLayout.addView(predictionGame, llParams);
+                    progressSpinner.setVisibility(View.GONE);
                 }
-                TextView header = new TextView(getApplicationContext());
-                header.setText("Прогнозирование");
-                header.setTextColor(Color.BLUE);
-                header.setTextSize(17f);
-                llParams.setMargins(0, 16, 0, 0);
-                linearLayout.addView(header, llParams);
-                llParams.setMargins(0, 16, 0, 0);
-                predictionGame = new TextView(getApplicationContext());
-                predictionGame.setText(news.getPrediction());
-                predictionGame.setTextColor(Color.BLACK);
-                predictionGame.setTextSize(16f);;
-                linearLayout.addView(predictionGame, llParams);
-                progressSpinner.setVisibility(View.GONE);
+                else {
+                    makeToast("Ошибка обмена данными.");
+                }
             }
 
             @Override
