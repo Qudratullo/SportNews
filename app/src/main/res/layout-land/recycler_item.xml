@@ -22,7 +22,7 @@
         <LinearLayout
             android:layout_margin="5dp"
             android:weightSum="9"
-            android:layout_height="200dp"
+            android:layout_height="130dp"
             android:layout_width="match_parent"
             android:orientation="vertical">
 
@@ -75,6 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
+                        android:layout_gravity="center"
                         android:textColor="@color/darkGreen"
                         android:layout_margin="@dimen/padding_line"
                         tools:text="2.35 Коэффициент "/>

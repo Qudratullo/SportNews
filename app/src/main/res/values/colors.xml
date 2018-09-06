@@ -4,8 +4,12 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#FFF</color>
-    <color name="color_line">#797989</color>
+    <color name="color_line">#3F51B5</color>
+    <!--<color name="color_line">#797989</color>-->
 
-    <color name="primaryDarker">#65a1c9</color>
+    <color name="primaryDarker">#beddf2</color>
     <color name="primaryDark">#25719f</color>
+    <color name="black">#000000</color>
+    <color name="darkGreen">#2b9f17</color>
+    <color name="darkRed">#da102b</color>
 </resources>

@@ -30,7 +30,7 @@
             app:tabGravity="fill"
             app:tabMode="scrollable"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:background="@color/primaryDark"/>
+            android:background="@color/colorPrimary"/>
 
     </android.support.design.widget.AppBarLayout>
 
