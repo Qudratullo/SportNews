@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Новости спорта</string>
+    <string name="action_settings">Settings</string>
+    <string name="football_news_title">Футбол</string>
+    <string name="hockey_news_title">Хоккей</string>
+    <string name="tennis_news_title">Теннис</string>
+    <string name="basketball_news_title">Баскетбол</string>
+    <string name="volleyball_news_title">Волейбол</string>
+    <string name="cybersport_news_title">Киберспорт</string>
+
+</resources>
